@@ -82,7 +82,7 @@ public class AdminRegister extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBack) {
             dispose();
-            new Menu().setVisible(true);
+            new MainMenu().setVisible(true);
         } else if (e.getSource() == btnClear) {
             clearFields();
         } else if (e.getSource() == btnRegister) {

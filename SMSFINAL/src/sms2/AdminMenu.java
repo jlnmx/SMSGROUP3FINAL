@@ -54,7 +54,7 @@ public class AdminMenu extends JFrame implements ActionListener {
                 } else if (source == btnGrds) {
                     SwingUtilities.invokeLater(() -> new Grades().setVisible(true));
                 } else if (source == btnHome) {
-                    new Menu(); 
+                    new MainMenu(); 
                 }
                 dispose();
             }

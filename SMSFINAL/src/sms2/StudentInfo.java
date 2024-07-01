@@ -197,8 +197,9 @@ public class StudentInfo extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSubmit) {
+            dispose();
             saveStudentInfo();
-            dispose(); 
+            new StudentMenu();
         } else if (e.getSource() == btnBack) {
             dispose(); 
         }
