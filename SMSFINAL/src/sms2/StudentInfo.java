@@ -26,6 +26,8 @@ public class StudentInfo extends JFrame implements ActionListener {
     public StudentInfo() {
         setTitle("Student Information");
         setLayout(null);
+        
+        getContentPane().setBackground(new Color(245, 245, 220));
 
         lblTitle = new JLabel("Student Information");
         lblTitle.setBounds(200, 5, 200, 20);
@@ -130,11 +132,15 @@ public class StudentInfo extends JFrame implements ActionListener {
         btnSubmit = new JButton("Submit");
         btnSubmit.setBounds(100, 350, 100, 30);
         btnSubmit.setFont(new Font("Arial", Font.BOLD, 15));
+        btnSubmit.setBackground(new Color(128, 0, 0)); // Maroon
+        btnSubmit.setForeground(Color.WHITE); // White text
         btnSubmit.addActionListener(this);
 
         btnBack = new JButton("Back");
         btnBack.setBounds(250, 350, 100, 30);
         btnBack.setFont(new Font("Arial", Font.BOLD, 15));
+        btnBack.setBackground(new Color(128, 0, 0)); // Maroon
+        btnBack.setForeground(Color.WHITE); // White text
         btnBack.addActionListener(this);
 
         add(lblTitle);
