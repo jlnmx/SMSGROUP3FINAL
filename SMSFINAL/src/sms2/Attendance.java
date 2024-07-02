@@ -28,6 +28,9 @@ public class Attendance extends JFrame implements ActionListener {
         setTitle("Attendance");
         setSize(500, 400);
         setLayout(null);
+        
+        getContentPane().setBackground(new Color(245, 245, 220));
+
 
         lblTitle = new JLabel("Attendance");
         lblTitle.setBounds(150, 30, 200, 20);
@@ -92,16 +95,22 @@ public class Attendance extends JFrame implements ActionListener {
         btnView = new JButton("View");
         btnView.setBounds(350, 200, 100, 30);
         btnView.setFont(new Font("Arial", Font.BOLD, 15));
+        btnView.setBackground(new Color(128,0,0));
+        btnView.setForeground(Color.WHITE);
         btnView.addActionListener(this);
 
         btnSubmit = new JButton("Submit");
         btnSubmit.setBounds(350, 250, 100, 30);
         btnSubmit.setFont(new Font("Arial", Font.BOLD, 15));
+        btnSubmit.setBackground(new Color(128,0,0));
+        btnSubmit.setForeground(Color.WHITE);
         btnSubmit.addActionListener(this);
 
         btnBack = new JButton("Back");
         btnBack.setBounds(350, 300, 100, 30);
         btnBack.setFont(new Font("Arial", Font.BOLD, 15));
+        btnBack.setBackground(new Color(128,0,0));
+        btnBack.setForeground(Color.WHITE);
         btnBack.addActionListener(this);
 
         add(lblTitle);
