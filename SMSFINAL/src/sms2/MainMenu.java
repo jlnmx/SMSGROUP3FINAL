@@ -13,12 +13,12 @@ public class MainMenu extends JFrame implements ActionListener {
         setLayout(null);
 
         lblTitle = new JLabel("Student Management System");
-        lblTitle.setFont(new Font("Bell MT", Font.BOLD, 24));
-        lblTitle.setBounds(150, 50, 400, 60);
+        lblTitle.setFont(new Font("Bell MT", Font.BOLD, 30));
+        lblTitle.setBounds(110, 50, 400, 60);
 
         lblQuestion = new JLabel("Are You A?");
         lblQuestion.setFont(new Font("Bell MT", Font.BOLD, 20));
-        lblQuestion.setBounds(250, 100, 200, 60);
+        lblQuestion.setBounds(250, 150, 200, 30);
 
         btnStudent = new JButton("Student");
         btnStudent.setBounds(150, 200, 100, 50);
@@ -28,7 +28,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
         lblAlreadyHaveAccount = new JLabel("Already have an account?");
         lblAlreadyHaveAccount.setFont(new Font("Arial", Font.PLAIN, 12));
-        lblAlreadyHaveAccount.setBounds(400, 300, 150, 30);
+        lblAlreadyHaveAccount.setBounds(320, 330, 150, 30);
 
         btnSignIn = new JButton("Sign In");
         btnSignIn.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -56,7 +56,7 @@ public class MainMenu extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnStudent) {
             dispose();
-            new StudentInfo().setVisible(true);
+            new StudentMenu().setVisible(true);
         } else if (e.getSource() == btnAdmin) {
             dispose();
             new AdminRegister().setVisible(true);
@@ -67,6 +67,6 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Menu();
+        new MainMenu();
     }
 }
