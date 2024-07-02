@@ -19,6 +19,8 @@ public class AdminRegister extends JFrame implements ActionListener {
         setTitle("Admin Registration");
         setLayout(null);
 
+        getContentPane().setBackground(new Color(245, 245, 220));
+        
         JLabel lblTitle = new JLabel("Admin Registration");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 32));
         lblTitle.setBounds(120, 30, 400, 40);
@@ -57,18 +59,24 @@ public class AdminRegister extends JFrame implements ActionListener {
         btnRegister = new JButton("Register");
         btnRegister.setBounds(50, 270, 100, 40);
         btnRegister.setFont(new Font("Arial", Font.BOLD, 12));
+        btnRegister.setBackground(new Color(128, 0, 0)); // Maroon
+        btnRegister.setForeground(Color.WHITE); // White text
         btnRegister.addActionListener(this);
         add(btnRegister);
 
         btnClear = new JButton("Clear");
         btnClear.setBounds(370, 270, 80, 40);
         btnClear.setFont(new Font("Arial", Font.BOLD, 12));
+        btnClear.setBackground(new Color(128, 0, 0)); // Maroon
+        btnClear.setForeground(Color.WHITE); // White text
         btnClear.addActionListener(this);
         add(btnClear);
 
         btnBack = new JButton("Back");
         btnBack.setBounds(480, 270, 80, 40);
         btnBack.setFont(new Font("Arial", Font.BOLD, 12));
+        btnBack.setBackground(new Color(128, 0, 0)); // Maroon
+        btnBack.setForeground(Color.WHITE); // White text
         btnBack.addActionListener(this);
         add(btnBack);
 
