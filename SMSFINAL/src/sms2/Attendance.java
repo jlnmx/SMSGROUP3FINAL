@@ -5,13 +5,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Attendance extends JFrame implements ActionListener {
-    private JLabel lblStatus, lblReason, lblTitle, lblSname;
-    private JTextField txtfldReason;
-    private JButton btnSubmit, btnBack;
-    private JComboBox<String> cmbSurname;
-    private JComboBox<String> cmbAttend;
+    private JLabel lblStatus, lblTitle, lblSurname, lblFirstname, lblCourse, lblYear, lblDate;
+    private JTextField txtfldSurname, txtfldFirstname, txtfldYear;
+    private JButton btnSubmit, btnBack, btnView;
+    private JComboBox<String> cmbCourse;
+    private JRadioButton rbPresent, rbAbsent;
+    private ButtonGroup bgStatus;
+    private JSpinner spinnerDate;
 
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
     private static final String USER = "maxxi";
@@ -29,28 +34,65 @@ public class Attendance extends JFrame implements ActionListener {
         lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
-        lblStatus = new JLabel("Surname");
-        lblStatus.setBounds(40, 70, 100, 20);
+        lblSurname = new JLabel("Surname");
+        lblSurname.setBounds(40, 70, 100, 20);
+        lblSurname.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblFirstname = new JLabel("First Name");
+        lblFirstname.setBounds(40, 100, 100, 20);
+        lblFirstname.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblCourse = new JLabel("Course");
+        lblCourse.setBounds(40, 130, 100, 20);
+        lblCourse.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblYear = new JLabel("Year");
+        lblYear.setBounds(40, 160, 100, 20);
+        lblYear.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblStatus = new JLabel("Status");
+        lblStatus.setBounds(40, 190, 100, 20);
         lblStatus.setFont(new Font("Arial", Font.BOLD, 15));
 
-        lblSname = new JLabel("Status");
-        lblSname.setBounds(40, 100, 100, 20);
-        lblSname.setFont(new Font("Arial", Font.BOLD, 15));
+        lblDate = new JLabel("Date");
+        lblDate.setBounds(40, 220, 100, 20);
+        lblDate.setFont(new Font("Arial", Font.BOLD, 15));
 
-        lblReason = new JLabel("Reason");
-        lblReason.setBounds(40, 130, 100, 20);
-        lblReason.setFont(new Font("Arial", Font.BOLD, 15));
+        txtfldSurname = new JTextField();
+        txtfldSurname.setBounds(120, 70, 150, 20);
+        txtfldSurname.setFont(new Font("Arial", Font.PLAIN, 15));
 
-        txtfldReason = new JTextField();
-        txtfldReason.setBounds(120, 130, 150, 20);
-        txtfldReason.setFont(new Font("Arial", Font.PLAIN, 15));
+        txtfldFirstname = new JTextField();
+        txtfldFirstname.setBounds(120, 100, 150, 20);
+        txtfldFirstname.setFont(new Font("Arial", Font.PLAIN, 15));
 
-        cmbAttend = new JComboBox<>(new String[]{"Absent", "Present"});
-        cmbAttend.setBounds(120, 100, 150, 20);
+        txtfldYear = new JTextField();
+        txtfldYear.setBounds(120, 160, 150, 20);
+        txtfldYear.setFont(new Font("Arial", Font.PLAIN, 15));
 
-        cmbSurname = new JComboBox<>();
-        cmbSurname.setBounds(120, 70, 150, 20);
-        loadSurnames();
+        rbPresent = new JRadioButton("Present");
+        rbPresent.setBounds(120, 190, 80, 20);
+
+        rbAbsent = new JRadioButton("Absent");
+        rbAbsent.setBounds(200, 190, 80, 20);
+
+        bgStatus = new ButtonGroup();
+        bgStatus.add(rbPresent);
+        bgStatus.add(rbAbsent);
+
+        cmbCourse = new JComboBox<>(new String[]{"BEED", "BSA", "BSBA-HRM", "BSCpE", "BSED-EN", "BSED-SS", "BSIE", "BSIT", "BSPSY", "DCPET", "DIT"});
+        cmbCourse.setBounds(120, 130, 150, 20);
+
+        SpinnerDateModel dateModel = new SpinnerDateModel();
+        spinnerDate = new JSpinner(dateModel);
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(spinnerDate, "yyyy-MM-dd");
+        spinnerDate.setEditor(dateEditor);
+        spinnerDate.setBounds(120, 220, 150, 20);
+
+        btnView = new JButton("View");
+        btnView.setBounds(350, 200, 100, 30);
+        btnView.setFont(new Font("Arial", Font.BOLD, 15));
+        btnView.addActionListener(this);
 
         btnSubmit = new JButton("Submit");
         btnSubmit.setBounds(350, 250, 100, 30);
@@ -63,72 +105,75 @@ public class Attendance extends JFrame implements ActionListener {
         btnBack.addActionListener(this);
 
         add(lblTitle);
+        add(lblSurname);
+        add(lblFirstname);
+        add(lblCourse);
+        add(lblYear);
         add(lblStatus);
-        add(lblReason);
-        add(txtfldReason);
-        add(cmbAttend);
-        add(cmbSurname);
+        add(lblDate);
+        add(txtfldSurname);
+        add(txtfldFirstname);
+        add(txtfldYear);
+        add(rbPresent);
+        add(rbAbsent);
+        add(cmbCourse);
+        add(spinnerDate);
         add(btnSubmit);
         add(btnBack);
-        add(lblSname);
+        add(btnView);
 
         setVisible(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void loadSurnames() {
-        String query = "SELECT DISTINCT surname FROM students";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                String surname = rs.getString("surname");
-                cmbSurname.addItem(surname);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Failed to load surnames: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBack) {
+            new AttendanceDashboard().setVisible(true);
             dispose();
         } else if (e.getSource() == btnSubmit) {
             submitAttendance();
+            dispose();
+            new AttendanceDashboard().setVisible(true);
+        } else if (e.getSource() == btnView) {
+            new AttendanceDashboard().setVisible(true);
+            dispose();
         }
     }
 
     private void submitAttendance() {
-        String status = cmbAttend.getSelectedItem().toString();
-        String reason = txtfldReason.getText();
+        String surname = txtfldSurname.getText();
+        String firstname = txtfldFirstname.getText();
+        String course = cmbCourse.getSelectedItem().toString();
+        String year = txtfldYear.getText();
+        String status = rbPresent.isSelected() ? "Present" : "Absent";
+        Date date = (Date) spinnerDate.getValue();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = sdf.format(date);
 
-        String surname = cmbSurname.getSelectedItem().toString();
-        String date = JOptionPane.showInputDialog(this, "Enter Date (MM-DD-YYYY):");
-
-        if (surname != null && !surname.isEmpty() && date != null && !date.isEmpty()) {
-            // Check if the record already exists
-            if (attendanceRecordExists(surname, date)) {
+        if (surname != null && !surname.isEmpty() && firstname != null && !firstname.isEmpty() && formattedDate != null && !formattedDate.isEmpty() && course != null && !course.isEmpty() && year != null && !year.isEmpty()) {
+            if (attendanceRecordExists(surname, firstname, course, year, formattedDate)) {
                 JOptionPane.showMessageDialog(this, "Attendance record for this student on this date already exists.", "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            String query = "INSERT INTO attendance (surname, date, status, reason) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO attendance (surname, firstname, course, year, date, status) VALUES (?, ?, ?, ?, ?, ?)";
             try (Connection conn = getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, surname);
-                pstmt.setString(2, date);
-                pstmt.setString(3, status);
-                pstmt.setString(4, reason);
+                pstmt.setString(2, firstname);
+                pstmt.setString(3, course);
+                pstmt.setString(4, year);
+                pstmt.setString(5, formattedDate);
+                pstmt.setString(6, status);
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Attendance record submitted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 if (attendanceDashboard != null) {
                     attendanceDashboard.loadAttendance();
                 }
-                dispose();  // Close the current window
+                dispose();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Failed to submit attendance record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -138,12 +183,15 @@ public class Attendance extends JFrame implements ActionListener {
         }
     }
 
-    private boolean attendanceRecordExists(String surname, String date) {
-        String query = "SELECT COUNT(*) FROM attendance WHERE surname = ? AND date = ?";
+    private boolean attendanceRecordExists(String surname, String firstname, String course, String year, String date) {
+        String query = "SELECT COUNT(*) FROM attendance WHERE surname = ? AND firstname = ? AND course = ? AND year = ? AND date = ?";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, surname);
-            pstmt.setString(2, date);
+            pstmt.setString(2, firstname);
+            pstmt.setString(3, course);
+            pstmt.setString(4, year);
+            pstmt.setString(5, date);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 int count = rs.getInt(1);
