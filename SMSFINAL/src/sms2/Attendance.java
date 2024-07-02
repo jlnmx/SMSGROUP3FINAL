@@ -36,31 +36,38 @@ public class Attendance extends JFrame implements ActionListener {
         lblTitle.setBounds(150, 30, 200, 20);
         lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-
+        lblTitle.setForeground(new Color(128, 0, 0));
+                
         lblSurname = new JLabel("Surname");
         lblSurname.setBounds(40, 70, 100, 20);
         lblSurname.setFont(new Font("Arial", Font.BOLD, 15));
-
+        lblSurname.setForeground(new Color(128, 0, 0));
+                
         lblFirstname = new JLabel("First Name");
         lblFirstname.setBounds(40, 100, 100, 20);
         lblFirstname.setFont(new Font("Arial", Font.BOLD, 15));
-
+        lblFirstname.setForeground(new Color(128, 0, 0));
+        
         lblCourse = new JLabel("Course");
         lblCourse.setBounds(40, 130, 100, 20);
         lblCourse.setFont(new Font("Arial", Font.BOLD, 15));
-
+        lblCourse.setForeground(new Color(128, 0, 0));
+       
         lblYear = new JLabel("Year");
         lblYear.setBounds(40, 160, 100, 20);
         lblYear.setFont(new Font("Arial", Font.BOLD, 15));
-
+        lblYear.setForeground(new Color(128, 0, 0));
+        
         lblStatus = new JLabel("Status");
         lblStatus.setBounds(40, 190, 100, 20);
         lblStatus.setFont(new Font("Arial", Font.BOLD, 15));
-
+        lblStatus.setForeground(new Color(128, 0, 0));
+                
         lblDate = new JLabel("Date");
         lblDate.setBounds(40, 220, 100, 20);
         lblDate.setFont(new Font("Arial", Font.BOLD, 15));
-
+        lblDate.setForeground(new Color(128, 0, 0));
+        
         txtfldSurname = new JTextField();
         txtfldSurname.setBounds(120, 70, 150, 20);
         txtfldSurname.setFont(new Font("Arial", Font.PLAIN, 15));
