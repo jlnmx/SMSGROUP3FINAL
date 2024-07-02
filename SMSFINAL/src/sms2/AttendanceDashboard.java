@@ -9,7 +9,7 @@ import java.sql.*;
 
 public class AttendanceDashboard extends JFrame implements ActionListener {
     private JTable tableAttendance;
-    private JButton btnLoadAttendance, btnAddAttendance, btnUpdateAttendance, btnDeleteAttendance;
+    private JButton btnLoadAttendance, btnAddAttendance, btnUpdateAttendance, btnDeleteAttendance, btnReturn;
     private DefaultTableModel tableModel;
 
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
@@ -33,16 +33,19 @@ public class AttendanceDashboard extends JFrame implements ActionListener {
         btnAddAttendance = new JButton("Add Attendance");
         btnUpdateAttendance = new JButton("Update Attendance");
         btnDeleteAttendance = new JButton("Delete Attendance");
+        btnReturn = new JButton("Return");
 
         btnLoadAttendance.addActionListener(this);
         btnAddAttendance.addActionListener(this);
         btnUpdateAttendance.addActionListener(this);
         btnDeleteAttendance.addActionListener(this);
+        btnReturn.addActionListener(this);
 
         panelButtons.add(btnLoadAttendance);
         panelButtons.add(btnAddAttendance);
         panelButtons.add(btnUpdateAttendance);
         panelButtons.add(btnDeleteAttendance);
+        panelButtons.add(btnReturn);
         add(panelButtons, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -53,17 +56,19 @@ public class AttendanceDashboard extends JFrame implements ActionListener {
         if (e.getSource() == btnLoadAttendance) {
             loadAttendance();
         } else if (e.getSource() == btnAddAttendance) {
-            Attendance atn = new Attendance(this);
-            atn.setVisible(true);
+            new Attendance(this).setVisible(true);
         } else if (e.getSource() == btnUpdateAttendance) {
             updateAttendance();
         } else if (e.getSource() == btnDeleteAttendance) {
             deleteAttendance();
+        } else if (e.getSource() == btnReturn) {
+            new Attendance(this).setVisible(true);
+            dispose();
         }
     }
 
     public void loadAttendance() {
-        String query = "SELECT surname, date, status, reason FROM attendance";
+        String query = "SELECT surname, firstname, course, year, date, status FROM attendance";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -100,31 +105,31 @@ public class AttendanceDashboard extends JFrame implements ActionListener {
         }
 
         String surname = tableModel.getValueAt(selectedRow, 0).toString();
-        String date = tableModel.getValueAt(selectedRow, 1).toString();
-        String status = tableModel.getValueAt(selectedRow, 2).toString();
-        String reason = tableModel.getValueAt(selectedRow, 3).toString();
+        String firstname = tableModel.getValueAt(selectedRow, 1).toString();
+        String course = tableModel.getValueAt(selectedRow, 2).toString();
+        String year = tableModel.getValueAt(selectedRow, 3).toString();
+        String date = tableModel.getValueAt(selectedRow, 4).toString();
+        String status = tableModel.getValueAt(selectedRow, 5).toString();
 
         JTextField txtStatus = new JTextField(status);
-        JTextField txtReason = new JTextField(reason);
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
         panel.add(new JLabel("Status:"));
         panel.add(txtStatus);
-        panel.add(new JLabel("Reason:"));
-        panel.add(txtReason);
 
         int result = JOptionPane.showConfirmDialog(this, panel, "Update Attendance", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             status = txtStatus.getText();
-            reason = txtReason.getText();
 
-            String query = "UPDATE attendance SET status = ?, reason = ? WHERE surname = ? AND date = ?";
+            String query = "UPDATE attendance SET status = ? WHERE surname = ? AND firstname = ? AND date = ? AND course = ? AND year = ?";
             try (Connection conn = getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, status);
-                pstmt.setString(2, reason);
-                pstmt.setString(3, surname);
+                pstmt.setString(2, surname);
+                pstmt.setString(3, firstname);
                 pstmt.setString(4, date);
+                pstmt.setString(5, course);
+                pstmt.setString(6, year);
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Attendance record updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 loadAttendance();
@@ -143,15 +148,17 @@ public class AttendanceDashboard extends JFrame implements ActionListener {
         }
 
         String surname = tableModel.getValueAt(selectedRow, 0).toString();
-        String date = tableModel.getValueAt(selectedRow, 1).toString();
+        String firstname = tableModel.getValueAt(selectedRow, 1).toString();
+        String date = tableModel.getValueAt(selectedRow, 4).toString();
 
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this attendance record?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            String query = "DELETE FROM attendance WHERE surname = ? AND date = ?";
+            String query = "DELETE FROM attendance WHERE surname = ? AND firstname = ? AND date = ?";
             try (Connection conn = getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, surname);
-                pstmt.setString(2, date);
+                pstmt.setString(2, firstname);
+                pstmt.setString(3, date);
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Attendance record deleted successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 loadAttendance();
