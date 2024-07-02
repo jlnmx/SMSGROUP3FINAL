@@ -1,83 +1,71 @@
 package sms2;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class MainMenu extends JFrame implements ActionListener {
-    private JLabel lblTitle, lblQuestion, lblSignIn;
-    private JButton btnStudent, btnAdmin, btnSignIn;
 
-    public MainMenu() {
-        setLayout(null);
-        
-        getContentPane().setBackground(new Color(245, 245, 220));
+public class StudentMenu extends JFrame implements ActionListener {
+private JLabel lblWelcome;   
+private JButton btnDashboard, btnInfo, btnBack;
 
-        lblTitle = new JLabel("Student Management System");
-        lblTitle.setFont(new Font("Bell MT", Font.BOLD, 30));
-        lblTitle.setBounds(110, 50, 400, 60);
-        lblTitle.setForeground(new Color(128, 0, 0));
 
-        lblQuestion = new JLabel("Are You A?");
-        lblQuestion.setFont(new Font("Bell MT", Font.BOLD, 20));
-        lblQuestion.setBounds(250, 150, 200, 30);
-        lblQuestion.setForeground(new Color(128, 0, 0));
-        
-        btnStudent = new JButton("Student");
-        btnStudent.setBounds(150, 200, 100, 50);
-        btnStudent.setBackground(new Color(128, 0, 0));
-        btnStudent.setForeground(Color.WHITE);
+StudentMenu(){
+    setVisible(true);
+    setLayout(null);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setSize(600, 400);
+    setTitle("Student Menu");
+    
+    getContentPane().setBackground(new Color(245, 245, 220));
 
-        btnAdmin = new JButton("Admin");
-        btnAdmin.setBounds(350, 200, 100, 50);
-        btnAdmin.setBackground(new Color(128, 0, 0));
-        btnAdmin.setForeground(Color.WHITE);
+    lblWelcome = new JLabel("Welcome Student");
+    lblWelcome.setBounds(165, 40, 300, 20);
+    lblWelcome.setFont(new Font("Bell MT", Font.BOLD, 30));
+    lblWelcome.setForeground(new Color(128, 0, 0));
 
-        lblSignIn = new JLabel("Already have an account?");
-        lblSignIn.setFont(new Font("Arial", Font.PLAIN, 12));
-        lblSignIn.setBounds(320, 330, 150, 30);
-        lblSignIn.setForeground(new Color(128, 0, 0));
-
-        btnSignIn = new JButton("Sign In");
-        btnSignIn.setFont(new Font("Arial", Font.PLAIN, 12));
-        btnSignIn.setBounds(470, 330, 80, 30);
-        btnSignIn.setBackground(new Color(128, 0, 0));
-        btnSignIn.setForeground(Color.WHITE);
-
-        add(lblTitle);
-        add(lblQuestion);
-        add(btnStudent);
-        add(btnAdmin);
-        add(lblSignIn);
-        add(btnSignIn);
-
-        setTitle("Student Management System");
-        setSize(600, 420);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-
-        btnStudent.addActionListener(this);
-        btnAdmin.addActionListener(this);
-        btnSignIn.addActionListener(this);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnStudent) {
-            dispose();
-            new StudentMenu().setVisible(true);
-        } else if (e.getSource() == btnAdmin) {
-            dispose();
-            new AdminRegister().setVisible(true);
-        } else if (e.getSource() == btnSignIn) {
-            dispose();
-            new AdminLogin().setVisible(true);
-        }
-    }
-
-    public static void main(String[] args) {
-        new MainMenu();
-    }
+    btnDashboard = new JButton("View Records");
+    btnDashboard.setBounds(135, 120, 300, 40);
+    btnDashboard.setBackground(new Color(128, 0, 0));
+    btnDashboard.setForeground(Color.WHITE);
+    
+    btnInfo = new JButton("Student Information");
+    btnInfo.setBounds(135, 200, 300, 40);
+    btnInfo.setBackground(new Color(128, 0, 0));
+    btnInfo.setForeground(Color.WHITE);
+    
+    btnBack = new JButton("Return");
+    btnBack.setBounds(490, 20, 80, 30);
+    btnBack.setBackground(new Color(128, 0, 0));
+    btnBack.setForeground(Color.WHITE);
+    
+    add(lblWelcome);
+    add(btnDashboard);
+    add(btnInfo);
+    add(btnBack);
+    
+    btnDashboard.addActionListener(this);
+    btnInfo.addActionListener(this);
+    btnBack.addActionListener(this);
+       
 }
+@Override
+public void actionPerformed (ActionEvent e){
+       if (e.getSource() == btnDashboard) {
+            dispose();
+            new StudentDashboard().setVisible(true);
+        } else if (e.getSource() == btnInfo) {
+            dispose();
+            new StudentInfo().setVisible(true);
+        } else if (e.getSource() == btnBack){
+            dispose();
+            new MainMenu().setVisible(true);
+        }
+       
+}
+public static void main(String []args){
+    new StudentMenu();
+}
+}
+
