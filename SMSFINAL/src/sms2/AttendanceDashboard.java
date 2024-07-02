@@ -22,6 +22,9 @@ public class AttendanceDashboard extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        getContentPane().setBackground(new Color(245, 245, 220));
+
+
         tableModel = new DefaultTableModel();
         tableAttendance = new JTable(tableModel);
 
@@ -30,10 +33,24 @@ public class AttendanceDashboard extends JFrame implements ActionListener {
 
         JPanel panelButtons = new JPanel(new FlowLayout());
         btnLoadAttendance = new JButton("Load Attendance");
+        btnLoadAttendance.setBackground(new Color(128, 0, 0));
+        btnLoadAttendance.setForeground(Color.WHITE);
+        
         btnAddAttendance = new JButton("Add Attendance");
+        btnAddAttendance.setBackground(new Color(128,0,0));
+        btnAddAttendance.setForeground(Color.WHITE);
+        
         btnUpdateAttendance = new JButton("Update Attendance");
+        btnUpdateAttendance.setBackground(new Color(128,0,0));
+        btnUpdateAttendance.setForeground(Color.WHITE);
+        
         btnDeleteAttendance = new JButton("Delete Attendance");
+        btnDeleteAttendance.setBackground(new Color(128,0, 0));
+        btnDeleteAttendance.setForeground(Color.WHITE);
+
         btnReturn = new JButton("Return");
+        btnReturn.setBackground(new Color(128,0,0));
+        btnReturn.setForeground(Color.WHITE);
 
         btnLoadAttendance.addActionListener(this);
         btnAddAttendance.addActionListener(this);
