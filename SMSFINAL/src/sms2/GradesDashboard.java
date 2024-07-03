@@ -15,14 +15,14 @@ public class GradesDashboard extends JFrame implements ActionListener {
     private static final String USER = "maxxi";
     private static final String PASSWORD = "01282004";
 
-    private JButton btnAdd, btnDelete;
+    private JButton btnAdd, btnDelete, btnReturn;
 
     public GradesDashboard() {
         setTitle("Grades Dashboard");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-
+        
         tableModel = new DefaultTableModel();
         tableGrades = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(tableGrades);
@@ -33,13 +33,25 @@ public class GradesDashboard extends JFrame implements ActionListener {
 
         JPanel panelButtons = new JPanel(new FlowLayout());
         btnAdd = new JButton("Add");
+        btnAdd.setBackground(new Color(128, 0, 0)); 
+        btnAdd.setForeground(Color.WHITE);
+        
         btnDelete = new JButton("Delete");
+        btnDelete.setBackground(new Color(128, 0, 0)); 
+        btnDelete.setForeground(Color.WHITE);
+        
+        
+        btnReturn = new JButton("Return");
+        btnReturn.setBackground(new Color(128, 0, 0)); 
+        btnReturn.setForeground(Color.WHITE);
 
         btnAdd.addActionListener(this);
         btnDelete.addActionListener(this);
+        btnReturn.addActionListener(this);
 
         panelButtons.add(btnAdd);
         panelButtons.add(btnDelete);
+        panelButtons.add(btnReturn);
 
         add(panelButtons, BorderLayout.SOUTH);
 
@@ -81,6 +93,9 @@ public class GradesDashboard extends JFrame implements ActionListener {
             new Grades();
         } else if (e.getSource() == btnDelete) {
             deleteGrade();
+        } else if (e.getSource() == btnReturn) {
+            new AdminMenu().setVisible(true);
+            dispose();
         }
     }
 
@@ -117,4 +132,3 @@ public class GradesDashboard extends JFrame implements ActionListener {
         SwingUtilities.invokeLater(() -> new GradesDashboard());
     }
 }
-
