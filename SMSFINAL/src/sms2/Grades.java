@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class Grades extends JFrame implements ActionListener {
 
-    private JLabel lblSubject, lblSurName, lblFirstName, lblFinal, lblMidterm, lblCourse;
+    private JLabel lblSubject, lblSurName, lblFirstName, lblFinal, lblMidterm, lblCourse, bg;
 
     private JTextField txtfldSurName = new JTextField();
     private JTextField txtfldFirstName = new JTextField();
@@ -19,10 +19,10 @@ public class Grades extends JFrame implements ActionListener {
     private JButton btnResult;
     private JButton btnClear;
     private JButton btnView;
+    private JButton btnBack;
 
     private JTextArea txtareaLoginResults = new JTextArea();
 
-    // Database credentials
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
     private static final String USER = "maxxi";
     private static final String PASSWORD = "01282004";
@@ -32,7 +32,13 @@ public class Grades extends JFrame implements ActionListener {
         setSize(500, 600);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
+        getContentPane().setBackground(new Color(245, 245, 220));
+        
+        bg = new JLabel();
+        bg.setIcon (new ImageIcon(new ImageIcon( "C:\\Users\\saban\\Documents\\NetBeansProjects\\OOP\\src\\SMSGROUP3FINAL\\SMSFINAL\\src\\sms2\\puplogo.png").getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH)));
+        bg.setBounds(320, 20, 125, 125);
+        
         lblSurName = new JLabel("Surname:");
         lblSurName.setBounds(20, 20, 100, 30);
         lblSurName.setFont(new Font("Arial", Font.BOLD, 14));
@@ -77,46 +83,60 @@ public class Grades extends JFrame implements ActionListener {
         txtfldFinal.setBounds(140, 220, 150, 30);
         txtfldFinal.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        btnResult = new JButton("Result");
+        btnResult = new JButton("Submit");
         btnResult.setBounds(20, 470, 100, 40);
         btnResult.setFont(new Font("Arial", Font.BOLD, 14));
-        btnResult.addActionListener(this);
-        btnResult.setBackground(Color.GREEN);
+        btnResult.setBackground(new Color(128, 0, 0)); 
+        btnResult.setForeground(Color.WHITE); 
 
         btnClear = new JButton("Clear");
         btnClear.setBounds(140, 470, 100, 40);
         btnClear.setFont(new Font("Arial", Font.BOLD, 14));
         btnClear.addActionListener(this);
-        btnClear.setBackground(Color.RED);
+        btnClear.setBackground(new Color(128, 0, 0)); 
+        btnClear.setForeground(Color.WHITE); 
 
         btnView = new JButton("View");
         btnView.setBounds(260, 470, 100, 40);
         btnView.setFont(new Font("Arial", Font.BOLD, 14));
-        btnView.addActionListener(this);
+        btnView.setBackground(new Color(128, 0, 0)); 
+        btnView.setForeground(Color.WHITE); 
+        
+
+        btnBack = new JButton("Back");
+        btnBack.setBounds(380, 470, 100, 40);
+        btnBack.setFont(new Font("Arial", Font.BOLD, 14));
+        btnBack.setBackground(new Color(128, 0, 0)); 
+        btnBack.setForeground(Color.WHITE); 
+        
 
         txtareaLoginResults.setFont(new Font("Arial", Font.PLAIN, 14));
         txtareaLoginResults.setBounds(20, 270, 450, 180);
         txtareaLoginResults.setEditable(false);
 
+        add(bg);
         add(lblSurName);
         add(lblFirstName);
         add(lblSubject);
         add(lblMidterm);
         add(lblFinal);
         add(lblCourse);
-
         add(txtfldSurName);
         add(txtfldFirstName);
         add(txtfldSubject);
         add(txtfldMidterm);
         add(txtfldFinal);
         add(cmbCourse);
-
         add(btnResult);
         add(btnClear);
         add(btnView);
+        add(btnBack);
         add(txtareaLoginResults);
-
+        
+        btnResult.addActionListener(this);
+        btnClear.addActionListener(this);
+        btnView.addActionListener(this);
+        btnBack.addActionListener(this);
         setVisible(true);
     }
 
@@ -130,9 +150,11 @@ public class Grades extends JFrame implements ActionListener {
             clearFields();
         } else if (e.getSource() == btnResult) {
             calculateResult();
-                    }
+        } else if (e.getSource() == btnBack) {
+            new AdminMenu().setVisible(true);
+            dispose();
+        }
     }
-
 
     private void clearFields() {
         txtfldSurName.setText("");
@@ -158,7 +180,7 @@ public class Grades extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Please enter values for both midterm and final grades.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             System.out.println("Midterm: " + midtermText);
             System.out.println("Final: " + finalText);
 
@@ -169,11 +191,10 @@ public class Grades extends JFrame implements ActionListener {
             average = Math.round(average * 4) / 4.0;
 
             String remarks = (average <= 3.0) ? "Passed" : "Failed";
-            
-             txtareaLoginResults.setText("Surname: " + surname
+
+            txtareaLoginResults.setText("Surname: " + surname
                     + "\nFirst Name: " + firstname
                     + "\nSubject: " + subject
-                    + "\nCourse :" + course
                     + "\n\nMidterm Grade: " + midterm
                     + "\nFinal Grade: " + finals
                     + "\n\nAverage Grade: " + average
