@@ -146,7 +146,7 @@ public class Attendance extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBack) {
-            new AttendanceDashboard().setVisible(true);
+            new AdminMenu().setVisible(true);
             dispose();
         } else if (e.getSource() == btnSubmit) {
             submitAttendance();
