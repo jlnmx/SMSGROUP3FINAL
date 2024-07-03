@@ -24,62 +24,64 @@ public class AdminRegister extends JFrame implements ActionListener {
         JLabel lblTitle = new JLabel("Admin Registration");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 32));
         lblTitle.setBounds(120, 30, 400, 40);
-        add(lblTitle);
-
+        
         JLabel lblUsername = new JLabel("Username:");
         lblUsername.setBounds(50, 100, 150, 30);
         lblUsername.setFont(new Font("Arial", Font.PLAIN, 18));
-        add(lblUsername);
 
         txtfldUsername = new JTextField();
         txtfldUsername.setBounds(250, 100, 200, 30);
         txtfldUsername.setFont(new Font("Arial", Font.PLAIN, 18));
-        add(txtfldUsername);
 
         JLabel lblPassword = new JLabel("Password:");
         lblPassword.setBounds(50, 150, 150, 30);
         lblPassword.setFont(new Font("Arial", Font.PLAIN, 18));
-        add(lblPassword);
 
         passwordField = new JPasswordField();
         passwordField.setBounds(250, 150, 200, 30);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 18));
-        add(passwordField);
 
         JLabel lblConfirmPassword = new JLabel("Confirm Password:");
         lblConfirmPassword.setBounds(50, 200, 200, 30);
         lblConfirmPassword.setFont(new Font("Arial", Font.PLAIN, 18));
-        add(lblConfirmPassword);
 
         confirmPasswordField = new JPasswordField();
         confirmPasswordField.setBounds(250, 200, 200, 30);
         confirmPasswordField.setFont(new Font("Arial", Font.PLAIN, 18));
-        add(confirmPasswordField);
+        
 
         btnRegister = new JButton("Register");
         btnRegister.setBounds(50, 270, 100, 40);
         btnRegister.setFont(new Font("Arial", Font.BOLD, 12));
-        btnRegister.setBackground(new Color(128, 0, 0)); // Maroon
-        btnRegister.setForeground(Color.WHITE); // White text
+        btnRegister.setBackground(new Color(128, 0, 0)); 
+        btnRegister.setForeground(Color.WHITE); 
         btnRegister.addActionListener(this);
-        add(btnRegister);
 
         btnClear = new JButton("Clear");
         btnClear.setBounds(370, 270, 80, 40);
         btnClear.setFont(new Font("Arial", Font.BOLD, 12));
-        btnClear.setBackground(new Color(128, 0, 0)); // Maroon
-        btnClear.setForeground(Color.WHITE); // White text
+        btnClear.setBackground(new Color(128, 0, 0)); 
+        btnClear.setForeground(Color.WHITE); 
         btnClear.addActionListener(this);
-        add(btnClear);
 
         btnBack = new JButton("Back");
         btnBack.setBounds(480, 270, 80, 40);
         btnBack.setFont(new Font("Arial", Font.BOLD, 12));
-        btnBack.setBackground(new Color(128, 0, 0)); // Maroon
-        btnBack.setForeground(Color.WHITE); // White text
+        btnBack.setBackground(new Color(128, 0, 0)); 
+        btnBack.setForeground(Color.WHITE);     
         btnBack.addActionListener(this);
-        add(btnBack);
 
+        add(lblTitle);
+        add(btnBack);
+        add(btnClear);
+        add(btnRegister);
+        add(lblUsername);
+        add(txtfldUsername);
+        add(lblPassword);
+        add(passwordField);
+        add(lblConfirmPassword);
+        add(confirmPasswordField);
+        
         setSize(600, 400);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
