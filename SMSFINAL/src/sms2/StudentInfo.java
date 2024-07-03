@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class StudentInfo extends JFrame implements ActionListener {
     private JLabel lblSurname, lblFirstname, lblMiddlename, lblBday, lblContact, lblEmail, lblStudentnum, lblGender, lblCourse, lblYear, lblTitle;
@@ -19,6 +20,8 @@ public class StudentInfo extends JFrame implements ActionListener {
     private JSpinner dateSpinner;
     private JComboBox<String> comboCourse;
 
+    private ArrayList<Student> studentList;
+
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
     private static final String USERNAME = "maxxi";
     private static final String PASSWORD = "01282004";
@@ -26,12 +29,13 @@ public class StudentInfo extends JFrame implements ActionListener {
     public StudentInfo() {
         setTitle("Student Information");
         setLayout(null);
-        
+
         getContentPane().setBackground(new Color(245, 245, 220));
 
         lblTitle = new JLabel("Student Information");
         lblTitle.setBounds(200, 5, 200, 20);
         lblTitle.setFont(new Font("Bell MT", Font.BOLD, 20));
+        lblTitle.setForeground(new Color(128, 0, 0));
 
         lblSurname = new JLabel("Surname");
         lblSurname.setBounds(75, 40, 100, 20);
@@ -132,15 +136,15 @@ public class StudentInfo extends JFrame implements ActionListener {
         btnSubmit = new JButton("Submit");
         btnSubmit.setBounds(100, 350, 100, 30);
         btnSubmit.setFont(new Font("Arial", Font.BOLD, 15));
-        btnSubmit.setBackground(new Color(128, 0, 0)); // Maroon
-        btnSubmit.setForeground(Color.WHITE); // White text
+        btnSubmit.setBackground(new Color(128, 0, 0)); 
+        btnSubmit.setForeground(Color.WHITE); 
         btnSubmit.addActionListener(this);
 
         btnBack = new JButton("Back");
-        btnBack.setBounds(250, 350, 100, 30);
+        btnBack.setBounds(350, 350, 100, 30);
         btnBack.setFont(new Font("Arial", Font.BOLD, 15));
-        btnBack.setBackground(new Color(128, 0, 0)); // Maroon
-        btnBack.setForeground(Color.WHITE); // White text
+        btnBack.setBackground(new Color(128, 0, 0)); 
+        btnBack.setForeground(Color.WHITE); 
         btnBack.addActionListener(this);
 
         add(lblTitle);
@@ -168,6 +172,8 @@ public class StudentInfo extends JFrame implements ActionListener {
         add(txtfldYear);
         add(btnSubmit);
         add(btnBack);
+
+        studentList = new ArrayList<>();
 
         setVisible(true);
         setResizable(false);
@@ -203,6 +209,7 @@ public class StudentInfo extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSubmit) {
+            addStudentToList();
             saveStudentInfo();
         } else if (e.getSource() == btnBack) {
             dispose(); 
@@ -210,7 +217,7 @@ public class StudentInfo extends JFrame implements ActionListener {
         }
     }
 
-    private void saveStudentInfo() {
+    private void addStudentToList() {
         String studentnum = txtfldStudentnum.getText();
         String surname = txtfldSurname.getText();
         String firstname = txtfldFirstname.getText();
@@ -229,28 +236,38 @@ public class StudentInfo extends JFrame implements ActionListener {
         String course = (String) comboCourse.getSelectedItem();
         String year = txtfldYear.getText();
 
+        Student student = new Student(studentnum, surname, firstname, middlename, birthday, gender, contactNumber, emailAddress, course, year);
+        studentList.add(student);
+    }
+
+    private void saveStudentInfo() {
         String query = "INSERT INTO students (studentnum, surname, firstname, middlename, birthday, gender, contactNumber, emailAddress, course, year) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, studentnum);
-            pstmt.setString(2, surname);
-            pstmt.setString(3, firstname);
-            pstmt.setString(4, middlename);
-            pstmt.setString(5, birthday);
-            pstmt.setString(6, gender);
-            pstmt.setString(7, contactNumber);
-            pstmt.setString(8, emailAddress);
-            pstmt.setString(9, course);
-            pstmt.setString(10, year);
 
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                JOptionPane.showMessageDialog(this, "Student information saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to save student information.", "Error", JOptionPane.ERROR_MESSAGE);
+            for (Student student : studentList) {
+                pstmt.setString(1, student.getStudentnum());
+                pstmt.setString(2, student.getSurname());
+                pstmt.setString(3, student.getFirstname());
+                pstmt.setString(4, student.getMiddlename());
+                pstmt.setString(5, student.getBirthday());
+                pstmt.setString(6, student.getGender());
+                pstmt.setString(7, student.getContactNumber());
+                pstmt.setString(8, student.getEmailAddress());
+                pstmt.setString(9, student.getCourse());
+                pstmt.setString(10, student.getYear());
+
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(this, "Student information saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to save student information.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
+
+            studentList.clear();  
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error saving student information: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -259,5 +276,71 @@ public class StudentInfo extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new StudentInfo());
+    }
+}
+
+class Student {
+    private String studentnum;
+    private String surname;
+    private String firstname;
+    private String middlename;
+    private String birthday;
+    private String gender;
+    private String contactNumber;
+    private String emailAddress;
+    private String course;
+    private String year;
+
+    public Student(String studentnum, String surname, String firstname, String middlename, String birthday, String gender, String contactNumber, String emailAddress, String course, String year) {
+        this.studentnum = studentnum;
+        this.surname = surname;
+        this.firstname = firstname;
+        this.middlename = middlename;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.contactNumber = contactNumber;
+        this.emailAddress = emailAddress;
+        this.course = course;
+        this.year = year;
+    }
+
+    public String getStudentnum() {
+        return studentnum;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public String getYear() {
+        return year;
     }
 }
