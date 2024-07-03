@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class AdminLogin extends JFrame implements ActionListener {
-    private JLabel lblTitle, lblUsername, lblPassword;
+    private JLabel lblTitle, lblUsername, lblPassword,bg;
     private JTextField txtUsername;
     private JPasswordField txtPassword;
     private JButton btnLogin, btnBack;
@@ -22,10 +22,15 @@ public class AdminLogin extends JFrame implements ActionListener {
 
         // Set background color to beige
         getContentPane().setBackground(new Color(245, 245, 220));
+        
+        bg = new JLabel();
+        bg.setIcon (new ImageIcon(new ImageIcon( "D:\\Documents\\NetBeansProjects\\SMSGROUP3FINAL\\SMSFINAL\\src\\sms2\\BJ.png").getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH)));
+        bg.setBounds(40, 20, 125, 125);
+        
 
         lblTitle = new JLabel("Admin Login");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 32));
-        lblTitle.setBounds(250, 190, 200, 40);
+        lblTitle.setBounds(250, 170, 200, 40);
 
         lblUsername = new JLabel("Username:");
         lblUsername.setBounds(130, 250, 100, 25);
@@ -66,6 +71,7 @@ public class AdminLogin extends JFrame implements ActionListener {
         add(txtPassword);
         add(btnLogin);
         add(btnBack);
+        add(bg);
 
         setSize(700, 600);
         setVisible(true);
