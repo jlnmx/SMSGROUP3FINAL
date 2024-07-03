@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 public class AdminDashboard extends JFrame implements ActionListener {
     private JTable table;
@@ -18,26 +19,40 @@ public class AdminDashboard extends JFrame implements ActionListener {
 
     public AdminDashboard() {
         setTitle("Admin Dashboard");
-        setSize(800, 600);
+        setSize(1000, 600);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         tableModel = new DefaultTableModel();
         table = new JTable(tableModel);
-        
-        String[] columns = {"Surname", "First Name", "Middle Name", "Birthday", "Gender", "Contact", "Email", "Course", "Year"};
-        tableModel.setColumnIdentifiers(columns);
 
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel panel = new JPanel();
         btnLoadData = new JButton("Load Data");
+        btnLoadData.setBackground(new Color(128, 0, 0)); 
+        btnLoadData.setForeground(Color.WHITE);
+                
         btnAddStudent = new JButton("Add Student");
+        btnAddStudent.setBackground(new Color(128, 0, 0)); 
+        btnAddStudent.setForeground(Color.WHITE);
+                
         btnEditStudent = new JButton("Edit Student");
+        btnEditStudent.setBackground(new Color(128, 0, 0)); 
+        btnEditStudent.setForeground(Color.WHITE);
+                
         btnDeleteStudent = new JButton("Delete Student");
+        btnDeleteStudent.setBackground(new Color(128, 0, 0)); 
+        btnDeleteStudent.setForeground(Color.WHITE);
+        
         btnLogout = new JButton("Logout");
+        btnLogout.setBackground(new Color(128, 0, 0)); 
+        btnLogout.setForeground(Color.WHITE);
+                
         btnBack = new JButton("Back");
+        btnBack.setBackground(new Color(128, 0, 0)); 
+        btnBack.setForeground(Color.WHITE);
 
         btnLoadData.addActionListener(this);
         btnAddStudent.addActionListener(this);
@@ -45,7 +60,6 @@ public class AdminDashboard extends JFrame implements ActionListener {
         btnDeleteStudent.addActionListener(this);
         btnLogout.addActionListener(this);
         btnBack.addActionListener(this);
-        
         
         panel.add(btnLoadData);
         panel.add(btnAddStudent);
@@ -60,7 +74,9 @@ public class AdminDashboard extends JFrame implements ActionListener {
     }
 
     private void loadData() {
-        String query = "SELECT studentnum, surname, firstname, middlename, birthday, gender, contactNumber, emailAddress, course, year FROM students";
+        String query = "SELECT studentnum AS 'Student Number', surname AS 'Surname', firstname AS 'First Name', " +
+                "middlename AS 'Middle Name', birthday AS 'Birthday', gender AS 'Gender', contactNumber AS 'Contact Number', " +
+                "emailAddress AS 'Email Address', course AS 'Course', year AS 'Year' FROM students";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement stmt = conn.createStatement();
@@ -83,6 +99,19 @@ public class AdminDashboard extends JFrame implements ActionListener {
                 }
                 tableModel.addRow(row);
             }
+
+            TableColumnModel columnModel = table.getColumnModel();
+            columnModel.getColumn(0).setPreferredWidth(130); 
+            columnModel.getColumn(1).setPreferredWidth(120);
+            columnModel.getColumn(2).setPreferredWidth(120); 
+            columnModel.getColumn(3).setPreferredWidth(120); 
+            columnModel.getColumn(4).setPreferredWidth(100); 
+            columnModel.getColumn(5).setPreferredWidth(80);  
+            columnModel.getColumn(6).setPreferredWidth(140);
+            columnModel.getColumn(7).setPreferredWidth(180); 
+            columnModel.getColumn(8).setPreferredWidth(100); 
+            columnModel.getColumn(9).setPreferredWidth(60);  
+
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Failed to load data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
