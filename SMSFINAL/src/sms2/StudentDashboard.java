@@ -22,7 +22,7 @@ public class StudentDashboard extends JFrame implements ActionListener {
         setSize(1000, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-
+     
         tableModel = new DefaultTableModel();
         tableStudent = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(tableStudent);
@@ -33,6 +33,8 @@ public class StudentDashboard extends JFrame implements ActionListener {
 
         JPanel panelButtons = new JPanel();
         btnReturn = new JButton("Return");
+        btnReturn.setBackground(new Color(128, 0, 0)); 
+        btnReturn.setForeground(Color.WHITE);
 
         btnReturn.addActionListener(this); 
 
