@@ -10,6 +10,7 @@ public class AdminRegister extends JFrame implements ActionListener {
     private JTextField txtfldUsername;
     private JPasswordField passwordField, confirmPasswordField;
     private JButton btnRegister, btnClear, btnBack;
+    private JLabel lblTitle, lblUsername, lblPassword, lblConfirmPassword;
 
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
     private static final String USER = "maxxi";
@@ -21,11 +22,12 @@ public class AdminRegister extends JFrame implements ActionListener {
 
         getContentPane().setBackground(new Color(245, 245, 220));
         
-        JLabel lblTitle = new JLabel("Admin Registration");
+        lblTitle = new JLabel("Admin Registration");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 32));
         lblTitle.setBounds(120, 30, 400, 40);
+        lblTitle.setForeground(new Color(128, 0, 0)); 
         
-        JLabel lblUsername = new JLabel("Username:");
+        lblUsername = new JLabel("Username:");
         lblUsername.setBounds(50, 100, 150, 30);
         lblUsername.setFont(new Font("Arial", Font.PLAIN, 18));
 
@@ -33,7 +35,7 @@ public class AdminRegister extends JFrame implements ActionListener {
         txtfldUsername.setBounds(250, 100, 200, 30);
         txtfldUsername.setFont(new Font("Arial", Font.PLAIN, 18));
 
-        JLabel lblPassword = new JLabel("Password:");
+        lblPassword = new JLabel("Password:");
         lblPassword.setBounds(50, 150, 150, 30);
         lblPassword.setFont(new Font("Arial", Font.PLAIN, 18));
 
@@ -41,7 +43,7 @@ public class AdminRegister extends JFrame implements ActionListener {
         passwordField.setBounds(250, 150, 200, 30);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 18));
 
-        JLabel lblConfirmPassword = new JLabel("Confirm Password:");
+        lblConfirmPassword = new JLabel("Confirm Password:");
         lblConfirmPassword.setBounds(50, 200, 200, 30);
         lblConfirmPassword.setFont(new Font("Arial", Font.PLAIN, 18));
 
