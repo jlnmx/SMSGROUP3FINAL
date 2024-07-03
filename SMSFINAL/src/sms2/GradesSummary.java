@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class GradesSummary extends JFrame implements ActionListener {
     private JTextField txtfldSurname;
-    private JTextArea txtAreaSummary;
+    private JTextArea txtaSummary;
     private JButton btnSearch, btnBack;
 
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
@@ -33,9 +33,9 @@ public class GradesSummary extends JFrame implements ActionListener {
         panelInput.add(txtfldSurname);
         panelInput.add(btnSearch);
 
-        txtAreaSummary = new JTextArea();
-        txtAreaSummary.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(txtAreaSummary);
+        txtaSummary = new JTextArea();
+        txtaSummary.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(txtaSummary);
 
         btnBack = new JButton("Back");
         btnBack.setBackground(new Color(128, 0, 0)); 
@@ -50,7 +50,7 @@ public class GradesSummary extends JFrame implements ActionListener {
     }
 
     private void loadGradeSummary(String surname) {
-        txtAreaSummary.setText("");
+        txtaSummary.setText("");
         String query = "SELECT s.surname, s.firstname, g.subject, g.midterm, g.finals, g.average " +
                        "FROM students s " +
                        "LEFT JOIN grades g ON s.surname = g.surname " +
@@ -79,9 +79,9 @@ public class GradesSummary extends JFrame implements ActionListener {
             }
 
             if (summary.length() == 0) {
-                txtAreaSummary.setText("No records found for surname: " + surname);
+                txtaSummary.setText("No records found for surname: " + surname);
             } else {
-                txtAreaSummary.setText(summary.toString());
+                txtaSummary.setText(summary.toString());
             }
 
         } catch (SQLException ex) {
