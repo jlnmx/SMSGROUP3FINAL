@@ -1,5 +1,6 @@
 package sms2;
 
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,41 +12,58 @@ public class AdminMenu extends JFrame implements ActionListener {
 
     public AdminMenu() {
         setTitle("Administrator Panel");
-
+        
+        getContentPane().setBackground(new Color(245, 245, 220));
+        
         lblTitle = new JLabel("Welcome Administrator", SwingConstants.CENTER);
         lblTitle.setBounds(100, 30, 250, 30);
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
-        add(lblTitle);
+        lblTitle.setFont(new Font("Bell MT", Font.BOLD, 20));
+        lblTitle.setForeground(new Color(128, 0, 0)); 
 
         btnAD = new JButton("Admin Dashboard");
         btnAD.setBounds(150, 80, 150, 30);
-        add(btnAD);
+        btnAD.setBackground(new Color(128, 0, 0)); 
+        btnAD.setForeground(Color.WHITE);       
 
         btnAttnd = new JButton("Attendance");
         btnAttnd.setBounds(150, 140, 150, 30);
-        add(btnAttnd);
-
+        btnAttnd.setBackground(new Color(128, 0, 0)); 
+        btnAttnd.setForeground(Color.WHITE);
+        
         btnGrds = new JButton("Grades");
         btnGrds.setBounds(150, 200, 150, 30);
-        add(btnGrds);
+        btnGrds.setBackground(new Color(128, 0, 0)); 
+        btnGrds.setForeground(Color.WHITE);
         
         btnVAttnd = new JButton("View Attendance");
         btnVAttnd.setBounds(150, 260, 150, 30);
-        add(btnVAttnd);
+        btnVAttnd.setBackground(new Color(128, 0, 0)); 
+        btnVAttnd.setForeground(Color.WHITE);
         
         btnVGrds = new JButton("View Grades");
         btnVGrds.setBounds(150, 320, 150, 30);
-        add(btnVGrds);
+        btnVGrds.setBackground(new Color(128, 0, 0)); 
+        btnVGrds.setForeground(Color.WHITE);
          
         btnHome = new JButton("Return");
         btnHome.setBounds(390, 10, 80, 30);
-        add(btnHome);
-
+        btnHome.setBackground(new Color(128, 0, 0)); 
+        btnHome.setForeground(Color.WHITE);
+        
+        setResizable(false);
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setVisible(true);
-
+        
+        add(btnAD);
+        add(lblTitle);
+        add(btnHome);
+        add(btnVGrds);
+        add(btnGrds);
+        add(btnVAttnd);
+        add(btnAttnd);
+        
         btnAD.addActionListener(this);
         btnAttnd.addActionListener(this);
         btnGrds.addActionListener(this);
