@@ -20,17 +20,17 @@ public class AdminLogin extends JFrame implements ActionListener {
         setTitle("Admin Login");
         setLayout(null);
 
-        // Set background color to beige
         getContentPane().setBackground(new Color(245, 245, 220));
         
         bg = new JLabel();
-        bg.setIcon (new ImageIcon(new ImageIcon( "D:\\Documents\\NetBeansProjects\\SMSGROUP3FINAL\\SMSFINAL\\src\\sms2\\BJ.png").getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH)));
-        bg.setBounds(40, 20, 125, 125);
+        bg.setIcon (new ImageIcon(new ImageIcon( "C:\\Users\\saban\\Documents\\NetBeansProjects\\OOP\\src\\SMSGROUP3FINAL\\SMSFINAL\\src\\sms2\\puplogo.png").getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH)));
+        bg.setBounds(30, 20, 125, 125);
         
 
-        lblTitle = new JLabel("Admin Login");
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 32));
-        lblTitle.setBounds(250, 170, 200, 40);
+        lblTitle = new JLabel("Admin Log In");
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 40));
+        lblTitle.setBounds(210, 170, 250, 55);
+        lblTitle.setForeground(new Color(128, 0, 0));
 
         lblUsername = new JLabel("Username:");
         lblUsername.setBounds(130, 250, 100, 25);
@@ -51,15 +51,15 @@ public class AdminLogin extends JFrame implements ActionListener {
         btnLogin = new JButton("Login");
         btnLogin.setBounds(200, 400, 100, 40);
         btnLogin.setFont(new Font("Arial", Font.BOLD, 18));
-        btnLogin.setBackground(new Color(128, 0, 0)); // Maroon
-        btnLogin.setForeground(Color.WHITE); // White text
+        btnLogin.setBackground(new Color(128, 0, 0)); 
+        btnLogin.setForeground(Color.WHITE); 
         btnLogin.addActionListener(this);
 
         btnBack = new JButton("Back");
         btnBack.setBounds(350, 400, 100, 40);
         btnBack.setFont(new Font("Arial", Font.BOLD, 18));
-        btnBack.setBackground(new Color(128, 0, 0)); // Maroon
-        btnBack.setForeground(Color.WHITE); // White text
+        btnBack.setBackground(new Color(128, 0, 0)); 
+        btnBack.setForeground(Color.WHITE); 
         btnBack.addActionListener(this);
 
         
@@ -99,7 +99,7 @@ public class AdminLogin extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == btnBack) {
             dispose();
-            new Menu().setVisible(true);
+            new MainMenu().setVisible(true);
         }
     }
 
