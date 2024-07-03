@@ -1,89 +1,346 @@
 package sms2;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
-public class StudentDashboard extends JFrame implements ActionListener {
-    private JTable tableStudent;
-    private DefaultTableModel tableModel;
+public class StudentInfo extends JFrame implements ActionListener {
+    private JLabel lblSurname, lblFirstname, lblMiddlename, lblBday, lblContact, lblEmail, lblStudentnum, lblGender, lblCourse, lblYear, lblTitle;
+    private JTextField txtfldSurname, txtfldFirstname, txtfldMiddlename, txtfldContact, txtfldEmail, txtfldStudentnum, txtfldYear;
+    private JRadioButton rbtnMale, rbtnFemale, rbtnOther;
+    private ButtonGroup genderGroup;
+    private JButton btnSubmit, btnBack;
+    private JSpinner dateSpinner;
+    private JComboBox<String> comboCourse;
+
+    private ArrayList<Student> studentList;
 
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
-    private static final String USER = "maxxi";
+    private static final String USERNAME = "maxxi";
     private static final String PASSWORD = "01282004";
 
-    private JButton btnReturn;
+    public StudentInfo() {
+        setTitle("Student Information");
+        setLayout(null);
 
-    public StudentDashboard() {
-        setTitle("Student Dashboard");
-        setSize(1000, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
-     
-        tableModel = new DefaultTableModel();
-        tableStudent = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(tableStudent);
-        add(scrollPane, BorderLayout.CENTER);
+        getContentPane().setBackground(new Color(245, 245, 220));
 
-        String[] columns = {"Surname", "First Name", "Course", "Year", "Subject", "Midterm", "Finals", "Average"};
-        tableModel.setColumnIdentifiers(columns);
+        lblTitle = new JLabel("Student Information");
+        lblTitle.setBounds(200, 5, 200, 20);
+        lblTitle.setFont(new Font("Bell MT", Font.BOLD, 20));
+        lblTitle.setForeground(new Color(128, 0, 0));
 
-        JPanel panelButtons = new JPanel();
-        btnReturn = new JButton("Return");
-        btnReturn.setBackground(new Color(128, 0, 0)); 
-        btnReturn.setForeground(Color.WHITE);
+        lblSurname = new JLabel("Surname");
+        lblSurname.setBounds(75, 40, 100, 20);
+        lblSurname.setFont(new Font("Arial", Font.BOLD, 15));
 
-        btnReturn.addActionListener(this); 
+        lblFirstname = new JLabel("First Name");
+        lblFirstname.setBounds(75, 70, 100, 20);
+        lblFirstname.setFont(new Font("Arial", Font.BOLD, 15));
 
-        panelButtons.add(btnReturn);
-        add(panelButtons, BorderLayout.SOUTH);
+        lblMiddlename = new JLabel("Middle Name");
+        lblMiddlename.setBounds(75, 100, 100, 20);
+        lblMiddlename.setFont(new Font("Arial", Font.BOLD, 15));
 
-        loadStudentDataFromDatabase();
+        lblStudentnum = new JLabel("Student No.");
+        lblStudentnum.setBounds(75, 130, 100, 20);
+        lblStudentnum.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblBday = new JLabel("Birthday");
+        lblBday.setBounds(75, 160, 100, 20);
+        lblBday.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblGender = new JLabel("Gender");
+        lblGender.setBounds(75, 190, 100, 20);
+        lblGender.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblContact = new JLabel("Contact Number");
+        lblContact.setBounds(75, 220, 120, 20);
+        lblContact.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblEmail = new JLabel("Email Address");
+        lblEmail.setBounds(75, 250, 120, 20);
+        lblEmail.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblCourse = new JLabel("Course");
+        lblCourse.setBounds(75, 280, 100, 20);
+        lblCourse.setFont(new Font("Arial", Font.BOLD, 15));
+
+        lblYear = new JLabel("Year");
+        lblYear.setBounds(75, 310, 100, 20);
+        lblYear.setFont(new Font("Arial", Font.BOLD, 15));
+
+        txtfldSurname = new JTextField();
+        txtfldSurname.setBounds(200, 40, 200, 20);
+        txtfldSurname.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        txtfldFirstname = new JTextField();
+        txtfldFirstname.setBounds(200, 70, 200, 20);
+        txtfldFirstname.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        txtfldMiddlename = new JTextField();
+        txtfldMiddlename.setBounds(200, 100, 200, 20);
+        txtfldMiddlename.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        txtfldStudentnum = new JTextField();
+        txtfldStudentnum.setBounds(200, 130, 200, 20);
+        txtfldStudentnum.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        SpinnerDateModel dateModel = new SpinnerDateModel();
+        dateSpinner = new JSpinner(dateModel);
+        dateSpinner.setBounds(200, 160, 130, 20);
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "yyyy-MM-dd");
+        dateSpinner.setEditor(dateEditor);
+
+        rbtnMale = new JRadioButton("Male");
+        rbtnMale.setBounds(200, 190, 70, 20);
+        rbtnMale.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        rbtnFemale = new JRadioButton("Female");
+        rbtnFemale.setBounds(270, 190, 80, 20);
+        rbtnFemale.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        rbtnOther = new JRadioButton("Other");
+        rbtnOther.setBounds(350, 190, 70, 20);
+        rbtnOther.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        genderGroup = new ButtonGroup();
+        genderGroup.add(rbtnMale);
+        genderGroup.add(rbtnFemale);
+        genderGroup.add(rbtnOther);
+
+        txtfldContact = new JTextField();
+        txtfldContact.setBounds(200, 220, 200, 20);
+        txtfldContact.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        txtfldEmail = new JTextField();
+        txtfldEmail.setBounds(200, 250, 200, 20);
+        txtfldEmail.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        String[] courses = {"BEED", "BSA", "BSBA-HRM", "BSCpE", "BSED-EN", "BSED-SS", "BSIE", "BSIT", "BSPSY", "DCPET", "DIT"};
+        comboCourse = new JComboBox<>(courses);
+        comboCourse.setBounds(200, 280, 130, 20);
+        comboCourse.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        txtfldYear = new JTextField();
+        txtfldYear.setBounds(200, 310, 200, 20);
+        txtfldYear.setFont(new Font("Arial", Font.PLAIN, 15));
+
+        btnSubmit = new JButton("Submit");
+        btnSubmit.setBounds(100, 350, 100, 30);
+        btnSubmit.setFont(new Font("Arial", Font.BOLD, 15));
+        btnSubmit.setBackground(new Color(128, 0, 0)); 
+        btnSubmit.setForeground(Color.WHITE); 
+        btnSubmit.addActionListener(this);
+
+        btnBack = new JButton("Back");
+        btnBack.setBounds(350, 350, 100, 30);
+        btnBack.setFont(new Font("Arial", Font.BOLD, 15));
+        btnBack.setBackground(new Color(128, 0, 0)); 
+        btnBack.setForeground(Color.WHITE); 
+        btnBack.addActionListener(this);
+
+        add(lblTitle);
+        add(lblSurname);
+        add(lblFirstname);
+        add(lblMiddlename);
+        add(lblStudentnum);
+        add(lblBday);
+        add(lblGender);
+        add(rbtnMale);
+        add(rbtnFemale);
+        add(rbtnOther);
+        add(lblContact);
+        add(lblEmail);
+        add(lblCourse);
+        add(lblYear);
+        add(txtfldSurname);
+        add(txtfldFirstname);
+        add(txtfldMiddlename);
+        add(txtfldStudentnum);
+        add(dateSpinner);
+        add(txtfldContact);
+        add(txtfldEmail);
+        add(comboCourse);
+        add(txtfldYear);
+        add(btnSubmit);
+        add(btnBack);
+
+        studentList = new ArrayList<>();
 
         setVisible(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+        setSize(600, 500);
     }
 
-    private void loadStudentDataFromDatabase() {
-        tableModel.setRowCount(0); 
-        String query = "SELECT s.surname, s.firstname, s.course, s.year, g.subject, g.midterm, g.finals, g.average " +
-                       "FROM students s " +
-                       "LEFT JOIN grades g ON s.surname = g.surname AND s.course = g.course";
+    public StudentInfo(String surname, String firstname, String middlename, String birthday, String gender, String contactNumber, String emailAddress, String course, String year) {
+        this(); 
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            while (rs.next()) {
-                String surname = rs.getString("surname");
-                String firstName = rs.getString("firstname");
-                String course = rs.getString("course");
-                String year = rs.getString("year");
-                String subject = rs.getString("subject");
-                double midterm = rs.getDouble("midterm");
-                double finals = rs.getDouble("finals");
-                double average = rs.getDouble("average");
-
-                Object[] rowData = {surname, firstName, course, year, subject, midterm, finals, average};
-                tableModel.addRow(rowData);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Failed to load student data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        txtfldSurname.setText(surname);
+        txtfldFirstname.setText(firstname);
+        txtfldMiddlename.setText(middlename);
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            dateSpinner.setValue(sdf.parse(birthday));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        if (gender.equalsIgnoreCase("Male")) {
+            rbtnMale.setSelected(true);
+        } else if (gender.equalsIgnoreCase("Female")) {
+            rbtnFemale.setSelected(true);
+        } else {
+            rbtnOther.setSelected(true);
+        }
+        txtfldContact.setText(contactNumber);
+        txtfldEmail.setText(emailAddress);
+        comboCourse.setSelectedItem(course);
+        txtfldYear.setText(year);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnReturn) {
+        if (e.getSource() == btnSubmit) {
+            addStudentToList();
+            saveStudentInfo();
+        } else if (e.getSource() == btnBack) {
             dispose(); 
-            new StudentMenu().setVisible(true);
+            new StudentMenu();
+        }
+    }
+
+    private void addStudentToList() {
+        String studentnum = txtfldStudentnum.getText();
+        String surname = txtfldSurname.getText();
+        String firstname = txtfldFirstname.getText();
+        String middlename = txtfldMiddlename.getText();
+        String birthday = new SimpleDateFormat("yyyy-MM-dd").format(dateSpinner.getValue());
+        String gender = "";
+        if (rbtnMale.isSelected()) {
+            gender = "Male";
+        } else if (rbtnFemale.isSelected()) {
+            gender = "Female";
+        } else if (rbtnOther.isSelected()) {
+            gender = "Other";
+        }
+        String contactNumber = txtfldContact.getText();
+        String emailAddress = txtfldEmail.getText();
+        String course = (String) comboCourse.getSelectedItem();
+        String year = txtfldYear.getText();
+
+        Student student = new Student(studentnum, surname, firstname, middlename, birthday, gender, contactNumber, emailAddress, course, year);
+        studentList.add(student);
+    }
+
+    private void saveStudentInfo() {
+        String query = "INSERT INTO students (studentnum, surname, firstname, middlename, birthday, gender, contactNumber, emailAddress, course, year) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            for (Student student : studentList) {
+                pstmt.setString(1, student.getStudentnum());
+                pstmt.setString(2, student.getSurname());
+                pstmt.setString(3, student.getFirstname());
+                pstmt.setString(4, student.getMiddlename());
+                pstmt.setString(5, student.getBirthday());
+                pstmt.setString(6, student.getGender());
+                pstmt.setString(7, student.getContactNumber());
+                pstmt.setString(8, student.getEmailAddress());
+                pstmt.setString(9, student.getCourse());
+                pstmt.setString(10, student.getYear());
+
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(this, "Student information saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to save student information.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            studentList.clear();  
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving student information: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new StudentDashboard());
+        SwingUtilities.invokeLater(() -> new StudentInfo());
+    }
+}
+
+class Student {
+    private String studentnum;
+    private String surname;
+    private String firstname;
+    private String middlename;
+    private String birthday;
+    private String gender;
+    private String contactNumber;
+    private String emailAddress;
+    private String course;
+    private String year;
+
+    public Student(String studentnum, String surname, String firstname, String middlename, String birthday, String gender, String contactNumber, String emailAddress, String course, String year) {
+        this.studentnum = studentnum;
+        this.surname = surname;
+        this.firstname = firstname;
+        this.middlename = middlename;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.contactNumber = contactNumber;
+        this.emailAddress = emailAddress;
+        this.course = course;
+        this.year = year;
+    }
+
+    public String getStudentnum() {
+        return studentnum;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public String getYear() {
+        return year;
     }
 }
