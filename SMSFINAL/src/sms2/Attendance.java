@@ -189,7 +189,6 @@ public class Attendance extends JFrame implements ActionListener {
                 if (attendanceDashboard != null) {
                     attendanceDashboard.loadAttendance();
                 }
-                dispose();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Failed to submit attendance record: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
