@@ -11,7 +11,7 @@ import javax.swing.table.TableColumnModel;
 public class AdminDashboard extends JFrame implements ActionListener {
     private JTable table;
     private DefaultTableModel tableModel;
-    private JButton btnLoadData, btnAddStudent, btnEditStudent, btnDeleteStudent, btnLogout, btnBack;
+    private JButton btnLoadData, btnEditStudent, btnDeleteStudent, btnLogout, btnBack;
 
     private static final String URL = "jdbc:mysql://localhost:3306/sms";
     private static final String USER = "maxxi";
@@ -34,10 +34,6 @@ public class AdminDashboard extends JFrame implements ActionListener {
         btnLoadData.setBackground(new Color(128, 0, 0)); 
         btnLoadData.setForeground(Color.WHITE);
                 
-        btnAddStudent = new JButton("Add Student");
-        btnAddStudent.setBackground(new Color(128, 0, 0)); 
-        btnAddStudent.setForeground(Color.WHITE);
-                
         btnEditStudent = new JButton("Edit Student");
         btnEditStudent.setBackground(new Color(128, 0, 0)); 
         btnEditStudent.setForeground(Color.WHITE);
@@ -55,14 +51,12 @@ public class AdminDashboard extends JFrame implements ActionListener {
         btnBack.setForeground(Color.WHITE);
 
         btnLoadData.addActionListener(this);
-        btnAddStudent.addActionListener(this);
         btnEditStudent.addActionListener(this);
         btnDeleteStudent.addActionListener(this);
         btnLogout.addActionListener(this);
         btnBack.addActionListener(this);
         
         panel.add(btnLoadData);
-        panel.add(btnAddStudent);
         panel.add(btnEditStudent);
         panel.add(btnDeleteStudent);
         panel.add(btnLogout);
@@ -117,13 +111,10 @@ public class AdminDashboard extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Failed to load data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnLoadData) {
             loadData();
-        } else if (e.getSource() == btnAddStudent) {
-            new StudentInfo().setVisible(true);
         } else if (e.getSource() == btnEditStudent) {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
