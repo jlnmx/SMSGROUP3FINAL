@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class GradesSummary extends JFrame implements ActionListener {
-    private JTextField txtfldSurname;
+    private JTextField txtfldStudentNumber;
     private JTextArea txtaSummary;
     private JButton btnSearch, btnBack;
 
@@ -19,18 +19,19 @@ public class GradesSummary extends JFrame implements ActionListener {
         setTitle("Student Grade Summary");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
-
+        setLayout(new BorderLayout());  
+        setLocationRelativeTo(null);
+        
         JPanel panelInput = new JPanel(new FlowLayout());
-        JLabel lblSurname = new JLabel("Enter Surname: ");
-        txtfldSurname = new JTextField(20);
+        JLabel lblStudentNumber = new JLabel("Enter Student Number: ");
+        txtfldStudentNumber = new JTextField(20);
         btnSearch = new JButton("Search");
-        btnSearch.setBackground(new Color(128, 0, 0)); 
+        btnSearch.setBackground(new Color(128, 0, 0));
         btnSearch.setForeground(Color.WHITE);
         btnSearch.addActionListener(this);
 
-        panelInput.add(lblSurname);
-        panelInput.add(txtfldSurname);
+        panelInput.add(lblStudentNumber);
+        panelInput.add(txtfldStudentNumber);
         panelInput.add(btnSearch);
 
         txtaSummary = new JTextArea();
@@ -38,7 +39,7 @@ public class GradesSummary extends JFrame implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(txtaSummary);
 
         btnBack = new JButton("Back");
-        btnBack.setBackground(new Color(128, 0, 0)); 
+        btnBack.setBackground(new Color(128, 0, 0));
         btnBack.setForeground(Color.WHITE);
         btnBack.addActionListener(this);
 
@@ -49,21 +50,22 @@ public class GradesSummary extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    private void loadGradeSummary(String surname) {
+    private void loadGradeSummary(String studentNumber) {
         txtaSummary.setText("");
         String query = "SELECT s.surname, s.firstname, g.subject, g.midterm, g.finals, g.average " +
                        "FROM students s " +
-                       "LEFT JOIN grades g ON s.surname = g.surname " +
-                       "WHERE s.surname = ?";
+                       "LEFT JOIN grades g ON s.studentnum = g.studentnum " +
+                       "WHERE s.studentnum = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, surname);
+            pstmt.setString(1, studentNumber);
             ResultSet rs = pstmt.executeQuery();
 
             StringBuilder summary = new StringBuilder();
             while (rs.next()) {
+                String surname = rs.getString("surname");
                 String firstName = rs.getString("firstname");
                 String subject = rs.getString("subject");
                 double midterm = rs.getDouble("midterm");
@@ -79,7 +81,7 @@ public class GradesSummary extends JFrame implements ActionListener {
             }
 
             if (summary.length() == 0) {
-                txtaSummary.setText("No records found for surname: " + surname);
+                txtaSummary.setText("No records found for student number: " + studentNumber);
             } else {
                 txtaSummary.setText(summary.toString());
             }
@@ -93,14 +95,14 @@ public class GradesSummary extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSearch) {
-            String surname = txtfldSurname.getText().trim();
-            if (!surname.isEmpty()) {
-                loadGradeSummary(surname);
+            String studentNumber = txtfldStudentNumber.getText().trim();
+            if (!studentNumber.isEmpty()) {
+                loadGradeSummary(studentNumber);
             } else {
-                JOptionPane.showMessageDialog(this, "Please enter a surname.", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please enter a student number.", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         } else if (e.getSource() == btnBack) {
-            dispose(); 
+            dispose();
             new StudentMenu().setVisible(true);
         }
     }

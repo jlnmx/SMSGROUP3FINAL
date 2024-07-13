@@ -19,7 +19,8 @@ public class AdminLogin extends JFrame implements ActionListener {
     public AdminLogin() {
         setTitle("Admin Login");
         setLayout(null);
-
+        
+        
         getContentPane().setBackground(new Color(245, 245, 220));
         
         bg = new JLabel();
@@ -72,8 +73,10 @@ public class AdminLogin extends JFrame implements ActionListener {
         add(btnLogin);
         add(btnBack);
         add(bg);
-
+        
+        
         setSize(700, 600);
+        setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);

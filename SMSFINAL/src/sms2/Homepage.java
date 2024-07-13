@@ -17,7 +17,7 @@ public class Homepage extends JFrame implements ActionListener{
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        setSize(600, 500);
        setResizable(false);
-       
+       setLocationRelativeTo(null);
        
         bg = new JLabel();
         bg.setIcon (new ImageIcon(new ImageIcon( "C:\\Users\\saban\\Documents\\NetBeansProjects\\OOP\\src\\SMSGROUP3FINAL\\SMSFINAL\\src\\sms2\\puplogo.png").getImage().getScaledInstance(125, 125, Image.SCALE_SMOOTH)));

@@ -13,6 +13,7 @@ public class MainMenu extends JFrame implements ActionListener {
         setLayout(null);
         setSize(600, 420);
         getContentPane().setBackground(new Color(245, 245, 220));
+        setLocationRelativeTo(null);
         
        
         lblTitle = new JLabel("Student Management System");
